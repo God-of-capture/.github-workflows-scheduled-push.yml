@@ -1,0 +1,27 @@
+name: Scheduled Push
+
+on:
+  schedule:
+    # Schedule to run at 12:00 (UTC) tomorrow
+    - cron: '0 12 * * *'
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Make a change
+        run: |
+          echo "Scheduled push on $(date)" >> file.txt
+          git config --global user.name "God-of-capture"
+          git config --global user.email "amritbakshi2003@gmail.com"
+          git add file.txt
+          git commit -m "Scheduled commit"
+
+      - name: Push changes
+        run: |
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
